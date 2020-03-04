@@ -7,5 +7,18 @@ RSpec.describe Tictactoe::Board do
 
       expect(board.size.length()).to eq (9)
     end
+
+    it "draw board" do
+        board = Tictactoe::Board.new()
+        expect{board.draw()}.to output(
+" - | - | -
+---|---|---
+ - | - | -
+---|---|---
+ - | - | -
+
+---------------
+").to_stdout
+      end
   end
 end
