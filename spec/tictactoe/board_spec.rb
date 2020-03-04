@@ -1,5 +1,5 @@
 require "./lib/tictactoe/game"
-RSpec.describe Tictactoe::Board do
+RSpec.describe Tictactoe::Board, Tictactoe::Game do
 
   context "board" do
     it "board should have a length of nine" do
@@ -20,5 +20,21 @@ RSpec.describe Tictactoe::Board do
 ---------------
 ").to_stdout
       end
+
+      it "add position to board" do
+        new_game = Tictactoe::Game.new()
+        new_game.play(1,'X')
+        expect{new_game.draw()}.to output(
+" X | - | -
+---|---|---
+ - | - | -
+---|---|---
+ - | - | -
+
+---------------
+").to_stdout
+      end
+    
+
   end
 end

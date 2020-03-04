@@ -5,7 +5,7 @@ RSpec.describe Tictactoe::Game, Tictactoe::Board do
     xit "should signal a draw when there is no winner" do
 
       board = Tictactoe::Board.new()
-      new_game = Tictactoe::Game.new(board)
+      new_game = Tictactoe::Game.new()
 
       player_one_moves = [1,3,5,8]
       player_two_moves = [2,4,6,7,9]

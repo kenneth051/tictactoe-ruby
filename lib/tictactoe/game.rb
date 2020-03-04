@@ -2,8 +2,6 @@
 module Tictactoe
     print "Welcome to Tic-Tac-Toe"
     
-    class Game 
-    end
     class Board
 
         attr_accessor :size
@@ -20,6 +18,13 @@ module Tictactoe
             board_separator = "---------------"+"\n"
             body = first_row+separator+second_row+separator+third_row+space+board_separator
             puts body
+        end
+    end
+
+    class Game < Board
+        def play(move, symbol)
+            position = move-1
+            @size[position]=symbol
         end
     end
 end
