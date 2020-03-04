@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "tictactoe/ruby"
+require "tictactoe/game"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
