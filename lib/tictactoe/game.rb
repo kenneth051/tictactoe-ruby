@@ -4,6 +4,11 @@ module Tictactoe
     
     class Game 
     end
-    class Board 
+    class Board
+
+        attr_accessor :size
+        def initialize()
+            @size = Array.new(9,"-")
+        end
     end
 end
