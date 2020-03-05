@@ -1,30 +1,31 @@
+require "./lib/tictactoe/board"
 
 module Tictactoe
-    print "Welcome to Tic-Tac-Toe"
-    
-    class Board
+  print "Welcome to Tic-Tac-Toe"
 
-        attr_accessor :size
-        def initialize()
-            @size = Array.new(9,"-")
-        end
+  class Game
+    attr_reader :board
 
-        def draw()
-            first_row = " "+  @size[0] + " | " +  @size[1] + " | " + @size[2] +"\n"
-            separator = "---|---|---" +"\n"
-            second_row = " "+  @size[3] +" | " +  @size[4] + " | "+  @size[5] +"\n"
-            third_row = " "+  @size[6] +" | " +  @size[7] + " | "+  @size[8] +"\n"
-            space = ""+"\n"
-            board_separator = "---------------"+"\n"
-            body = first_row+separator+second_row+separator+third_row+space+board_separator
-            puts body
-        end
+    def initialize
+      @symbols = []
+      @board = Board.new
     end
 
-    class Game < Board
-        def play(move, symbol)
-            position = move-1
-            @size[position]=symbol
-        end
+    def draw
+      @board.draw
     end
+
+    def play(move, symbol)
+      @symbols.push(symbol)
+      if @symbols[-2] and @symbols[-1] and @symbols[-2] == @symbols[-1]
+        raise "Error"
+      end
+      position = move - 1
+      @board.size[position] = symbol
+    end
+
+    def check_winner(input)
+      print "Player one has won!"
+    end
+  end
 end
