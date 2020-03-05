@@ -15,6 +15,13 @@ module Tictactoe
       @board.draw
     end
 
+    def check_position(pos)
+      if @board.positions[pos] != "-"
+        raise "Error"
+      end
+      return true
+    end
+
     def play(move, symbol)
       @symbols.push(symbol)
       if @symbols[-2] and @symbols[-1] and @symbols[-2] == @symbols[-1]
@@ -34,8 +41,6 @@ module Tictactoe
       comb7 = @board.positions[0] == symbol && @board.positions[4] == symbol && @board.positions[8] == symbol
       comb8 = @board.positions[2] == symbol && @board.positions[4] == symbol && @board.positions[6] == symbol
 
-      puts comb1
-      puts @board.positions
       if comb1 || comb2 || comb3 || comb4 || comb5 || comb6 || comb7 || comb8
         return true
       else
