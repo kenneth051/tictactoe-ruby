@@ -1,24 +1,51 @@
 require "./lib/tictactoe/game"
-RSpec.describe Tictactoe::Game, Tictactoe::Board do
+RSpec.describe Tictactoe::Game do
+  context "#draw" do
+    it "add position to board" do
+      new_game = Tictactoe::Game.new
+      new_game.play(1, "X")
+      expect { new_game.draw }.to output(
+        " X | - | -
+---|---|---
+ - | - | -
+---|---|---
+ - | - | -
 
-  context "when both players play" do
-    xit "should signal a draw when there is no winner" do
+---------------
+"
+      ).to_stdout
+    end
+  end
 
-      board = Tictactoe::Board.new()
-      new_game = Tictactoe::Game.new(board)
+  context "#play" do
+    it "should ensure that a player doesnt play twice consecutively" do
+      new_game = Tictactoe::Game.new
+      new_game.play(1, "X")
 
-      player_one_moves = [1,3,5,8]
-      player_two_moves = [2,4,6,7,9]
+      expect {
+        new_game.play(2, "X")
+      }.to raise_error
+    end
+  end
 
-      player_one_moves.each do |moves|
-        new_game.play(p1_moves,"O")
+  context "check_winner" do
+    it "should check for a winner" do
+      new_game = Tictactoe::Game.new
+      moves = [
+        ["X", 0],
+        ["O", 4],
+        ["X", 2],
+        ["O", 3],
+        ["X", 1],
+        ["O", 5],
+        ["X", 6],
+        ["O", 7],
+      ]
+
+      moves.each do |symbol, position|
+        new_game.play(position, symbol)
       end
-
-      player_two_moves.each do |moves|
-        new_game.play(p2_moves,"X")
-      end
-
-      expect(new_game.get_winner()).to eq (" IT'S A DRAW!")
+      expect { new_game.check_winner("X") }.to output("Player one has won!").to_stdout
     end
   end
 end
