@@ -1,18 +1,26 @@
 require "./lib/tictactoe/board"
 
 module Tictactoe
-  print "Welcome to Tic-Tac-Toe"
+  class PositionOutOfRange < StandardError; end
 
   class Game
     attr_reader :board
 
     def initialize
+      puts "Welcome to Tic-Tac-Toe"
+      puts "Player one uses 'X' and player two uses 'O'"
       @symbols = []
       @board = Board.new
     end
 
     def draw
       @board.draw
+    end
+
+    def position_within_range(position)
+      if position < 0 || position > 9
+        raise PositionOutOfRange
+      end
     end
 
     def check_position(pos)
@@ -22,34 +30,55 @@ module Tictactoe
       return true
     end
 
-    def play(move, symbol)
-      @symbols.push(symbol)
-      if @symbols[-2] and @symbols[-1] and @symbols[-2] == @symbols[-1]
+    def make_move(move, symbol)
+      if @symbols[-1] == symbol
         raise "Error"
       end
+      @symbols.push(symbol)
       position = move - 1
       @board.positions[position] = symbol
     end
 
     def winning_combinations(symbol)
-      comb1 = @board.positions[0] == symbol && @board.positions[1] == symbol && @board.positions[2] == symbol
-      comb2 = @board.positions[3] == symbol && @board.positions[4] == symbol && @board.positions[5] == symbol
-      comb3 = @board.positions[6] == symbol && @board.positions[7] == symbol && @board.positions[8] == symbol
-      comb4 = @board.positions[0] == symbol && @board.positions[3] == symbol && @board.positions[6] == symbol
-      comb5 = @board.positions[1] == symbol && @board.positions[4] == symbol && @board.positions[7] == symbol
-      comb6 = @board.positions[2] == symbol && @board.positions[5] == symbol && @board.positions[8] == symbol
-      comb7 = @board.positions[0] == symbol && @board.positions[4] == symbol && @board.positions[8] == symbol
-      comb8 = @board.positions[2] == symbol && @board.positions[4] == symbol && @board.positions[6] == symbol
-
-      if comb1 || comb2 || comb3 || comb4 || comb5 || comb6 || comb7 || comb8
-        return true
-      else
-        return false
+      combinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ]
+      combinations.any? do |combination|
+        combination.all? { |position| @board.positions[position] == symbol }
       end
     end
 
     def check_winner(input)
-      print "Player one has won!"
+      player = { "x" => "one", "o" => "two" }
+      if winning_combinations(input)
+        puts "Player #{player[input]} has won!"
+        return true
+      end
+    end
+
+    def play()
+      draw()
+      # while the board is not full and check_winner is not true
+      while @board.is_not_board_full && check_winner("x") != true
+        if !check_winner("x") || !check_winner("o")
+          puts "Enter symbol"
+          symbol = gets.chomp
+          puts "Enter position"
+          position = gets.chomp.to_i
+          position_within_range(position - 1)
+          check_position(position - 1)
+          make_move(position, symbol)
+          draw()
+        end
+      end
+      puts "Game is a tie"
     end
   end
 end

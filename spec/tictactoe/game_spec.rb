@@ -3,15 +3,13 @@ RSpec.describe Tictactoe::Game do
   context "#draw" do
     it "add position to board" do
       new_game = Tictactoe::Game.new
-      new_game.play(1, "X")
+      new_game.make_move(1, "X")
       expect { new_game.draw }.to output(
-        " X | - | -
----|---|---
- - | - | -
----|---|---
- - | - | -
-
----------------
+" X | - | - 
+-----------
+ - | - | - 
+-----------
+ - | - | - 
 "
       ).to_stdout
     end
@@ -20,32 +18,58 @@ RSpec.describe Tictactoe::Game do
   context "#play" do
     it "should ensure that a player doesnt play twice consecutively" do
       new_game = Tictactoe::Game.new
-      new_game.play(1, "X")
+      new_game.make_move(1, "X")
 
       expect {
-        new_game.play(2, "X")
+        new_game.make_move(2, "X")
       }.to raise_error
+    end
+    it "should ensure that both players play" do
+      new_game = Tictactoe::Game.new
+      new_game.make_move(1, "X")
+
+      expect {
+        new_game.make_move(3, "O")
+      }.not_to raise_error
     end
   end
 
   context "check_winner" do
-    it "should check for a winner" do
+    it "should ensure player one gets to be a winner" do
       new_game = Tictactoe::Game.new
       moves = [
-        ["X", 0],
-        ["O", 4],
-        ["X", 2],
-        ["O", 3],
         ["X", 1],
         ["O", 5],
-        ["X", 6],
-        ["O", 7],
+        ["X", 3],
+        ["O", 4],
+        ["X", 2],
+        ["O", 6],
+        ["X", 7],
+        ["O", 8],
       ]
 
       moves.each do |symbol, position|
-        new_game.play(position, symbol)
+        new_game.make_move(position, symbol)
       end
-      expect { new_game.check_winner("X") }.to output("Player one has won!").to_stdout
+      expect(new_game.check_winner("X")).to eq(true)
+    end
+      it "should ensure player two gets to be a  winner" do
+        new_game = Tictactoe::Game.new
+        moves = [
+          ["O", 1],
+          ["X", 5],
+          ["O", 3],
+          ["X", 4],
+          ["O", 2],
+          ["X", 6],
+          ["O", 7],
+          ["X", 8],
+        ]
+  
+        moves.each do |symbol, position|
+          new_game.make_move(position, symbol)
+        end
+        expect(new_game.check_winner("O") ).to eq(true)
     end
 
     context "winning combinations" do
@@ -59,9 +83,8 @@ RSpec.describe Tictactoe::Game do
           ["X", 3], #
 
         ]
-
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect(new_game.winning_combinations("X")).to eq (true)
       end
@@ -77,10 +100,26 @@ RSpec.describe Tictactoe::Game do
         ]
 
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect(new_game.winning_combinations("X")).to eq (true)
       end
+
+      it "should check for not a winning combination" do
+        new_game = Tictactoe::Game.new
+        moves = [
+          ["X", 4], #
+          ["O", 3],
+          ["X", 6], #
+          ["O", 2],
+        ]
+
+        moves.each do |symbol, position|
+          new_game.make_move(position, symbol)
+        end
+        expect(new_game.winning_combinations("X")).to eq (false)
+      end
+
       it "should check for third winning combinations" do
         new_game = Tictactoe::Game.new
         moves = [
@@ -92,7 +131,7 @@ RSpec.describe Tictactoe::Game do
         ]
 
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect(new_game.winning_combinations("X")).to eq (true)
       end
@@ -107,7 +146,7 @@ RSpec.describe Tictactoe::Game do
         ]
 
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect(new_game.winning_combinations("X")).to eq (true)
       end
@@ -122,7 +161,7 @@ RSpec.describe Tictactoe::Game do
         ]
 
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect(new_game.winning_combinations("X")).to eq (true)
       end
@@ -137,7 +176,7 @@ RSpec.describe Tictactoe::Game do
         ]
 
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect(new_game.winning_combinations("X")).to eq (true)
       end
@@ -152,7 +191,7 @@ RSpec.describe Tictactoe::Game do
         ]
 
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect(new_game.winning_combinations("X")).to eq (true)
       end
@@ -167,11 +206,12 @@ RSpec.describe Tictactoe::Game do
         ]
 
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect(new_game.winning_combinations("X")).to eq (true)
       end
     end
+
     context "check_position" do
       it "should only permit players to play using open positions" do
         new_game = Tictactoe::Game.new
@@ -180,11 +220,20 @@ RSpec.describe Tictactoe::Game do
           ["O", 2],
         ]
         moves.each do |symbol, position|
-          new_game.play(position, symbol)
+          new_game.make_move(position, symbol)
         end
         expect {
           new_game.check_position(2)
         }.to raise_error
+      end
+    end
+
+    context "position_within_range" do
+      it "should only permit players to play using positions within range" do
+        new_game = Tictactoe::Game.new
+        expect {
+          new_game.position_within_range(11)
+        }.to raise_error Tictactoe::PositionOutOfRange
       end
     end
   end
