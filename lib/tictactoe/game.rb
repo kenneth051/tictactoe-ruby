@@ -1,5 +1,6 @@
 require "./lib/tictactoe/board"
 
+
 module Tictactoe
   class PositionOutOfRange < StandardError; end
 
@@ -17,18 +18,41 @@ module Tictactoe
       @board.draw
     end
 
-    def position_within_range(position)
-      if position < 0 || position > 9
-        raise PositionOutOfRange
+    def get_valid_user_symbol_input
+      puts "Enter symbol"
+      while true
+        symbol= gets.chomp
+        if ["x","o"].include? symbol
+          return symbol
+      else
+        puts "invalid input, symbol be either 'x' or 'o' lowercase"
       end
     end
+  end
+  def check_input_position(input)
+    if input <= 0 || input > 9
+      puts "position out of range, enter from 1 to 9"
+    else 
+      return input
+    end
+  end
+  def check_board_position(input)
+    if @board.positions[input-1] != "-"
+    puts "position has been taken, choose another one"
+    else return input
+    end
+  end
 
-    def check_position(pos)
-      if @board.positions[pos] != "-"
-        raise "Error"
+    def get_valid_user_position_input(stdin: $stdin)
+      puts "Enter position"
+      while true
+        position = stdin.gets.chomp.to_i
+        if !check_input_position(position)
+        elsif !check_board_position(position)
+        else return position
+        end
       end
-      return true
-    end
+      end
 
     def make_move(move, symbol)
       if @symbols[-1] == symbol
@@ -55,28 +79,28 @@ module Tictactoe
       end
     end
 
-    def check_winner(input)
-      player = { "x" => "one", "o" => "two" }
-      if winning_combinations(input)
-        puts "Player #{player[input]} has won!"
-        return true
+    def check_winner()
+      players = ["o","x"]
+      players.each do |symbol|
+        if winning_combinations(symbol)
+          puts "Player using '#{symbol}' has won!"
+          return true
+        end
       end
     end
 
     def play()
       draw()
-      # while the board is not full and check_winner is not true
-      while @board.is_not_board_full && check_winner("x") != true
-        if !check_winner("x") || !check_winner("o")
-          puts "Enter symbol"
-          symbol = gets.chomp
-          puts "Enter position"
-          position = gets.chomp.to_i
-          position_within_range(position - 1)
-          check_position(position - 1)
+      while @board.is_not_board_full
+        if check_winner() != true
+          symbol = get_valid_user_symbol_input()
+          position=get_valid_user_position_input()
           make_move(position, symbol)
           draw()
+        else
+          return false         
         end
+
       end
       puts "Game is a tie"
     end

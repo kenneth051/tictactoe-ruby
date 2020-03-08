@@ -1,4 +1,16 @@
 require "./lib/tictactoe/game"
+
+class FakeStringInput
+  def initialize(input)
+    @input = input
+  end
+
+  def gets
+    return @input
+  end
+end
+
+
 RSpec.describe Tictactoe::Game do
   context "#draw" do
     it "add position to board" do
@@ -38,38 +50,38 @@ RSpec.describe Tictactoe::Game do
     it "should ensure player one gets to be a winner" do
       new_game = Tictactoe::Game.new
       moves = [
-        ["X", 1],
-        ["O", 5],
-        ["X", 3],
-        ["O", 4],
-        ["X", 2],
-        ["O", 6],
-        ["X", 7],
-        ["O", 8],
+        ["x", 1],
+        ["o", 5],
+        ["x", 3],
+        ["o", 4],
+        ["x", 2],
+        ["o", 6],
+        ["x", 7],
+        ["o", 8],
       ]
 
       moves.each do |symbol, position|
         new_game.make_move(position, symbol)
       end
-      expect(new_game.check_winner("X")).to eq(true)
+      expect(new_game.check_winner()).to eq(true)
     end
       it "should ensure player two gets to be a  winner" do
         new_game = Tictactoe::Game.new
         moves = [
-          ["O", 1],
-          ["X", 5],
-          ["O", 3],
-          ["X", 4],
-          ["O", 2],
-          ["X", 6],
-          ["O", 7],
-          ["X", 8],
+          ["o", 1],
+          ["x", 5],
+          ["o", 3],
+          ["x", 4],
+          ["o", 2],
+          ["x", 6],
+          ["o", 7],
+          ["x", 8],
         ]
   
         moves.each do |symbol, position|
           new_game.make_move(position, symbol)
         end
-        expect(new_game.check_winner("O") ).to eq(true)
+        expect(new_game.check_winner() ).to eq(true)
     end
 
     context "winning combinations" do
@@ -212,8 +224,34 @@ RSpec.describe Tictactoe::Game do
       end
     end
 
-    context "check_position" do
-      it "should only permit players to play using open positions" do
+    context "get_valid_user_position_input" do
+      it "should output 'Enter position' the console" do
+        input = FakeStringInput.new("1")
+        new_game = Tictactoe::Game.new
+        expect{new_game.get_valid_user_position_input(stdin:input)}.to output("Enter position\n").to_stdout
+      end
+
+      it "should accept input from the console" do
+        input = FakeStringInput.new("4")
+        new_game = Tictactoe::Game.new
+        expect(new_game.get_valid_user_position_input(stdin:input)).to eq(4)
+      end
+    end
+    context "check_input_position" do
+      it "should not allow players to play using positions out of range" do
+        new_game = Tictactoe::Game.new
+        expect {
+          new_game.check_input_position(11)
+        }.to output("position out of range, enter from 1 to 9\n").to_stdout
+      end
+      it "should only  allow players to play using positions in range" do
+        new_game = Tictactoe::Game.new
+        expect(new_game.check_input_position(2)).to eq(2)
+      end
+    end
+
+    context "check_board_position" do
+      it "should not permit players to play using already played positions" do
         new_game = Tictactoe::Game.new
         moves = [
           ["X", 3],
@@ -223,17 +261,12 @@ RSpec.describe Tictactoe::Game do
           new_game.make_move(position, symbol)
         end
         expect {
-          new_game.check_position(2)
-        }.to raise_error
+          new_game.check_board_position(2)
+        }.to output("position has been taken, choose another one\n").to_stdout
       end
-    end
-
-    context "position_within_range" do
-      it "should only permit players to play using positions within range" do
+      it "should only permit players to play using open positions" do
         new_game = Tictactoe::Game.new
-        expect {
-          new_game.position_within_range(11)
-        }.to raise_error Tictactoe::PositionOutOfRange
+        expect(new_game.check_board_position(2)).to eq(2)
       end
     end
   end
