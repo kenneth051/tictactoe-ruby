@@ -5,7 +5,7 @@ RSpec.describe Tictactoe::Board do
     it "board should have a length of nine" do
       board = Tictactoe::Board.new
 
-      expect(board.size.length).to eq (9)
+      expect(board.positions.length).to eq (9)
     end
 
     it "draw board" do

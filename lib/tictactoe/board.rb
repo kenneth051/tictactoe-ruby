@@ -1,16 +1,16 @@
 module Tictactoe
   class Board
-    attr_accessor :size
+    attr_accessor :positions
 
     def initialize()
-      @size = Array.new(9, "-")
+      @positions = Array.new(9, "-")
     end
 
     def draw
-      first_row = " #{@size[0]} | #{@size[1]} | #{@size[2]}\n"
+      first_row = " #{@positions[0]} | #{@positions[1]} | #{@positions[2]}\n"
       separator = "---|---|---" + "\n"
-      second_row = " #{@size[3]} | #{@size[4]} | #{@size[5]}\n"
-      third_row = " #{@size[6]} | #{@size[7]} | #{@size[8]}\n"
+      second_row = " #{@positions[3]} | #{@positions[4]} | #{@positions[5]}\n"
+      third_row = " #{@positions[6]} | #{@positions[7]} | #{@positions[8]}\n"
       space = "" + "\n"
       board_separator = "---------------" + "\n"
       body = first_row + separator + second_row + separator + third_row + space + board_separator
