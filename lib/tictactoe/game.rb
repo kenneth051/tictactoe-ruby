@@ -1,5 +1,5 @@
 require "./lib/tictactoe/board"
-
+require "./lib/tictactoe/validation"
 
 module Tictactoe
   class PositionOutOfRange < StandardError; end
@@ -7,7 +7,9 @@ module Tictactoe
   class Game
     attr_reader :board
 
-    def initialize
+    def initialize(validation, stdin: $stdin)
+      @validation = validation
+      @stdin = stdin
       puts "Welcome to Tic-Tac-Toe"
       puts "Player one uses 'X' and player two uses 'O'"
       @symbols = []
@@ -18,41 +20,24 @@ module Tictactoe
       @board.draw
     end
 
-    def get_valid_user_symbol_input
+    def get_symbol()
       puts "Enter symbol"
       while true
-        symbol= gets.chomp
-        if ["x","o"].include? symbol
-          return symbol
-      else
-        puts "invalid input, symbol be either 'x' or 'o' lowercase"
+        symbol = @stdin.gets.chomp
+        if !@validation.check_input_symbol(symbol)
+        else return symbol         end
       end
     end
-  end
-  def check_input_position(input)
-    if input <= 0 || input > 9
-      puts "position out of range, enter from 1 to 9"
-    else 
-      return input
-    end
-  end
-  def check_board_position(input)
-    if @board.positions[input-1] != "-"
-    puts "position has been taken, choose another one"
-    else return input
-    end
-  end
 
-    def get_valid_user_position_input(stdin: $stdin)
+    def get_position()
       puts "Enter position"
       while true
-        position = stdin.gets.chomp.to_i
-        if !check_input_position(position)
-        elsif !check_board_position(position)
-        else return position
-        end
+        position = @stdin.gets.chomp.to_i
+        if !@validation.check_input_position(position)
+        elsif !@validation.check_board_position(position, @board.positions)
+        else return position         end
       end
-      end
+    end
 
     def make_move(move, symbol)
       if @symbols[-1] == symbol
@@ -80,7 +65,7 @@ module Tictactoe
     end
 
     def check_winner()
-      players = ["o","x"]
+      players = ["o", "x"]
       players.each do |symbol|
         if winning_combinations(symbol)
           puts "Player using '#{symbol}' has won!"
@@ -93,16 +78,15 @@ module Tictactoe
       draw()
       while @board.is_not_board_full
         if check_winner() != true
-          symbol = get_valid_user_symbol_input()
-          position=get_valid_user_position_input()
+          symbol = get_symbol()
+          position = get_position()
           make_move(position, symbol)
           draw()
         else
-          return false         
+          return false
         end
-
       end
-      puts "Game is a tie"
+      puts " IT'S A DRAW!"
     end
   end
 end
