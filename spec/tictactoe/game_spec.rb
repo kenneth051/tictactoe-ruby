@@ -23,11 +23,11 @@ RSpec.describe Tictactoe::Game do
     it "should ensure that a player doesnt play twice consecutively" do
       validate = FakeValidation.new
       new_game = Tictactoe::Game.new(validate)
-      new_game.make_move(1, "X")
+      new_game.make_move(1, "x")
 
       expect {
-        new_game.make_move(2, "X")
-      }.to raise_error
+        new_game.make_move(2, ["o","x"].pop())
+      }.to output("You cannot play consecutively\n").to_stdout
     end
     it "should ensure that both players play" do
       validate = FakeValidation.new
@@ -245,11 +245,10 @@ RSpec.describe Tictactoe::Game do
     end
     it "should print error message if position input is invalid" do
       validate = Tictactoe::Validation.new
-      input = FakeStringInput.new(["20", "3"])
+      input = FakeStringInput.new(["20", "5"])
       new_game = Tictactoe::Game.new(validate, stdin: input)
       expect {
         symbol = new_game.get_position
-        expect(symbol).to eq(3)
       }.to output(/out of range/).to_stdout
     end
   end

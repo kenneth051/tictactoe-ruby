@@ -24,8 +24,9 @@ module Tictactoe
       puts "Enter symbol"
       while true
         symbol = @stdin.gets.chomp
-        if !@validation.check_input_symbol(symbol)
-        else return symbol         end
+        if @validation.check_input_symbol(symbol)
+          return symbol
+        end
       end
     end
 
@@ -33,15 +34,17 @@ module Tictactoe
       puts "Enter position"
       while true
         position = @stdin.gets.chomp.to_i
-        if !@validation.check_input_position(position)
-        elsif !@validation.check_board_position(position, @board.positions)
-        else return position         end
+        if @validation.check_position_range(position) &&
+           @validation.check_board_position(position, @board.positions)
+          return position
+        end
       end
     end
 
     def make_move(move, symbol)
-      if @symbols[-1] == symbol
-        raise "Error"
+      while @symbols[-1] == symbol
+        puts "You cannot play consecutively"
+        return
       end
       @symbols.push(symbol)
       position = move - 1
@@ -76,7 +79,7 @@ module Tictactoe
 
     def play()
       draw()
-      while @board.is_not_board_full
+      while @board.is_not_full
         if check_winner() != true
           symbol = get_symbol()
           position = get_position()

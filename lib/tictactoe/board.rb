@@ -14,8 +14,8 @@ module Tictactoe
       puts " #{positions[6]} | #{positions[7]} | #{positions[8]} "
     end
 
-    def is_not_board_full
-        return @positions.count("-") >=1 ? true : false 
+    def is_not_full
+      return true if @positions.count("-") >0
     end
   end
 end

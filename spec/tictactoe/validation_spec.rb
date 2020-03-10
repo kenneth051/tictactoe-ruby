@@ -1,16 +1,16 @@
 require "./lib/tictactoe/validation"
 
 RSpec.describe Tictactoe::Validation do
-  context "check_input_position" do
+  context "check_position_range" do
     it "should not allow players to play using positions out of range" do
       validate = Tictactoe::Validation.new
       expect {
-        validate.check_input_position(11)
+        validate.check_position_range(11)
       }.to output("position out of range, enter from 1 to 9\n").to_stdout
     end
     it "should only allow players to play using positions in range" do
       validate = Tictactoe::Validation.new
-      expect(validate.check_input_position(2)).to eq(2)
+      expect(validate.check_position_range(2)).to eq(2)
     end
   end
 
