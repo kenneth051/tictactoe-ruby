@@ -1,24 +1,23 @@
 require "./lib/tictactoe/game"
+require "./lib/tictactoe/validation"
+
 RSpec.describe Tictactoe::Game, Tictactoe::Board do
-
   context "when both players play" do
-    xit "should signal a draw when there is no winner" do
+    it "should signal a draw when the board is full" do
+      validate=Tictactoe::Validation.new 
+      new_game = Tictactoe::Game.new(validate)
+      new_game.board.positions = ["x", "o", "x", "o", "x", "o", "x", "o", "x"]
 
-      board = Tictactoe::Board.new()
-      new_game = Tictactoe::Game.new()
-
-      player_one_moves = [1,3,5,8]
-      player_two_moves = [2,4,6,7,9]
-
-      player_one_moves.each do |moves|
-        new_game.play(p1_moves,"O")
-      end
-
-      player_two_moves.each do |moves|
-        new_game.play(p2_moves,"X")
-      end
-
-      expect(new_game.get_winner()).to eq (" IT'S A DRAW!")
+      expect { new_game.play() }.to output(
+        " x | o | x 
+-----------
+ o | x | o 
+-----------
+ x | o | x 
+ IT'S A DRAW!
+"
+      ).to_stdout
     end
+
   end
 end
