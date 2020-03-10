@@ -15,7 +15,7 @@ module Tictactoe
     end
 
     def is_not_full
-      return true if @positions.count("-") >0
+      @positions.count("-") > 0
     end
   end
 end

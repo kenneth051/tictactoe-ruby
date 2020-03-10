@@ -34,10 +34,10 @@ RSpec.describe Tictactoe::Board do
       board = Tictactoe::Board.new
       expect(board.is_not_full).to eq (true)
     end
-    it "check if board is  full" do
+    it "check if board is full" do
       board = Tictactoe::Board.new
       board.positions = Array.new(9, "X")
-      expect(board.is_not_full).to eq (nil)
+      expect(board.is_not_full).to eq (false)
     end
   end
 end
