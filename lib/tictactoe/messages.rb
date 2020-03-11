@@ -1,18 +1,45 @@
-ALL_MESSAGES = {
-    "invalid_input" => "invalid input, symbol be either 'x' or 'o' lowercase",
-    "out_of_range" => "position out of range, enter from 1 to 9",
-    "position_taken" => "position has been taken, choose another one",
-    "welcome" => "Welcome to Tic-Tac-Toe",
-    "symbols" => "Use 'x' or 'o'",
-    "enter_symbol" => "Enter symbol",
-    "enter_position" => "Enter position",
-    "double_play" => "You cannot play consecutively",
-    # "player_wins" => "Player using '%d' has won!" % [symbol],
-    "draw" => " IT'S A DRAW!",
-  },
 module Tictactoe
+    ALL_MESSAGES=[
+        {
+          "invalid_input" => "invalid input, symbol be either 'x' or 'o' lowercase",
+          "out_of_range" => "position out of range, enter from 1 to 9",
+          "position_taken" => "position has been taken, choose another one",
+          "welcome" => "Welcome to Tic-Tac-Toe",
+          "symbols" => "Use 'x' or 'o'",
+          "enter_symbol" => "Enter symbol",
+          "enter_position" => "Enter position",
+          "double_play" => "You cannot play consecutively",
+          # "player_wins" => "Player using '%s' has won!"% [symbol],
+          "draw" => " IT'S A DRAW!",
+        },
+        {
+          "invalid_input" => "entrée non valide, le symbole doit être 'x' ou 'o' en minuscules",
+          "out_of_range" => "position hors plage, entrez de 1 à 9",
+          "position_taken" => "position a été prise, choisissez-en une autre",
+          "welcome" => "Bienvenue chez Tic-Tac-Toe",
+          "symbols" => "Utilisez 'x' ou 'o'",
+          "enter_symbol" => "Entrez le symbole",
+          "enter_position" => "Entrez la position",
+          "double_play" => "Vous ne pouvez pas jouer consécutivement",
+          # "player_wins" => "Player using '%s' has won!"% [symbol],
+          "draw" => "C'EST UN DESSIN!",
+          },
+        {
+          "invalid_input" => '输入无效，符号为“ x”或“ o”小写',
+          "out_of_range" => "位置超出范围，输入1到9",
+          "position_taken" => "位置已定，请选择另一个",
+          "welcome" => "欢迎来到井字游戏",
+          "symbols" => "使用'x'或'o'",
+          "enter_symbol" => "输入符号",
+          "enter_position" => "输入位置",
+          "double_play" => "您不能连续播放",
+          # "player_wins" => "Player using '%s' has won!"% [symbol],
+          "draw" => " 这是一个平局！",
+          },
+      ]
+
   class Messages
-    def initialize(messages,index)
+    def initialize(messages, index)
       @messages = messages
       @index = index
     end
