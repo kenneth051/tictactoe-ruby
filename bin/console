@@ -3,6 +3,7 @@
 require "bundler/setup"
 require "./lib/tictactoe/game"
 require "./lib/tictactoe/validation"
+require "./lib/tictactoe/messages"
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
@@ -10,6 +11,8 @@ require "./lib/tictactoe/validation"
 # (If you use this, don't forget to add pry to your Gemfile!)
 # require "pry"
 # Pry.start
-validate=Tictactoe::Validation.new
-new_game=Tictactoe::Game.new(validate)
+
+messages=Tictactoe::Messages.new(ALL_MESSAGES,0)
+validate=Tictactoe::Validation.new(messages)
+new_game=Tictactoe::Game.new(validate, messages)
 new_game.play

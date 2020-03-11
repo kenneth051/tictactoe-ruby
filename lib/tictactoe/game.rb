@@ -7,11 +7,12 @@ module Tictactoe
   class Game
     attr_reader :board
 
-    def initialize(validation, stdin: $stdin)
+    def initialize(validation, messages, stdin: $stdin)
       @validation = validation
+      @messages = messages
       @stdin = stdin
-      puts "Welcome to Tic-Tac-Toe"
-      puts "Player one uses 'X' and player two uses 'O'"
+      puts @messages.get_message("welcome")
+      puts @messages.get_message("symbols")
       @symbols = []
       @board = Board.new
     end
@@ -21,7 +22,7 @@ module Tictactoe
     end
 
     def get_symbol()
-      puts "Enter symbol"
+      puts @messages.get_message("enter_symbol")
       while true
         symbol = @stdin.gets.chomp
         if @validation.check_input_symbol(symbol)
@@ -31,7 +32,7 @@ module Tictactoe
     end
 
     def get_position()
-      puts "Enter position"
+      puts @messages.get_message("enter_position")
       while true
         position = @stdin.gets.chomp.to_i
         if @validation.check_position_range(position) &&
@@ -43,7 +44,7 @@ module Tictactoe
 
     def make_move(move, symbol)
       while @symbols[-1] == symbol
-        puts "You cannot play consecutively"
+        puts @messages.get_message("double_play")
         return
       end
       @symbols.push(symbol)
@@ -89,7 +90,7 @@ module Tictactoe
           return false
         end
       end
-      puts " IT'S A DRAW!"
+      puts @messages.get_message("draw")
     end
   end
 end
