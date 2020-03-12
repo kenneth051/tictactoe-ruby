@@ -1,5 +1,6 @@
 module Tictactoe
     ALL_MESSAGES=[
+        #english
         {
           "invalid_input" => "invalid input, symbol be either 'x' or 'o' lowercase",
           "out_of_range" => "position out of range, enter from 1 to 9",
@@ -9,9 +10,10 @@ module Tictactoe
           "enter_symbol" => "Enter symbol",
           "enter_position" => "Enter position",
           "double_play" => "You cannot play consecutively",
-          # "player_wins" => "Player using '%s' has won!"% [symbol],
+          "player_wins" => "Player using '%{symbol}' has won!",
           "draw" => " IT'S A DRAW!",
         },
+        #french
         {
           "invalid_input" => "entrée non valide, le symbole doit être 'x' ou 'o' en minuscules",
           "out_of_range" => "position hors plage, entrez de 1 à 9",
@@ -21,9 +23,10 @@ module Tictactoe
           "enter_symbol" => "Entrez le symbole",
           "enter_position" => "Entrez la position",
           "double_play" => "Vous ne pouvez pas jouer consécutivement",
-          # "player_wins" => "Player using '%s' has won!"% [symbol],
+          "player_wins" => "Le joueur utilisant '%{symbol}' a gagné!",
           "draw" => "C'EST UN DESSIN!",
           },
+        #mandarin
         {
           "invalid_input" => '输入无效，符号为“ x”或“ o”小写',
           "out_of_range" => "位置超出范围，输入1到9",
@@ -33,7 +36,7 @@ module Tictactoe
           "enter_symbol" => "输入符号",
           "enter_position" => "输入位置",
           "double_play" => "您不能连续播放",
-          # "player_wins" => "Player using '%s' has won!"% [symbol],
+          "player_wins" => "使用“％{symbol}”的玩家赢了！",
           "draw" => " 这是一个平局！",
           },
       ]

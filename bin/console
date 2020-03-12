@@ -14,10 +14,9 @@ require 'json'
 # require "pry"
 # Pry.start
 
-# messages=Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,0)
-# validate=Tictactoe::Validation.new(messages)
-# new_game=Tictactoe::Game.new(validate, messages)
-# new_game.play
-json=JSON.parse(File.read("./lib/tictactoe/settings.json"))
+TicTactoe::ALL_MESSAGES
+TicTactoe::Message::ALL_MESSAGES
+
+json = JSON.parse(File.read("./lib/tictactoe/settings.json"))
 launch_game = Tictactoe::LaunchGame.new(json)
 launch_game.start()

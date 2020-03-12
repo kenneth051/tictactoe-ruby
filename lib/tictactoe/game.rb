@@ -72,7 +72,7 @@ module Tictactoe
       players = ["o", "x"]
       players.each do |symbol|
         if winning_combinations(symbol)
-          puts "Player using '#{symbol}' has won!"
+          puts @messages.get_message("player_wins") % {:symbol => symbol}
           return true
         end
       end

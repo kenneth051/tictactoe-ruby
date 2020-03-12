@@ -11,17 +11,18 @@ RSpec.describe Tictactoe::LaunchGame do
     end
     it "should return a user's language" do
         json=JSON.parse(File.read("./lib/tictactoe/settings.json"))
-        input = FakeStringInput.new(["1","1"])
+        input = FakeStringInput.new(["1"])
         launch_game = Tictactoe::LaunchGame.new(json, stdin:input)
-        expect(launch_game.choose_language).to have_key("language") 
+        expect(launch_game.choose_language).to be_kind_of(String) 
       end
   end
   context "#start" do
-    it "should output a message to enable users choose a language" do
+    it "should start and finish the game with a users's language" do
       json=JSON.parse(File.read("./lib/tictactoe/settings.json"))
-      input = FakeStringInput.new(["1","3"])
+      inputs=["1","x", "1", "o", "5", "x", "3", "o", "4", "x", "2", "o", "6", "x", "7", "o", "8"]
+      input = FakeStringInput.new(inputs)
       launch_game = Tictactoe::LaunchGame.new(json, stdin:input)
-      expect { launch_game.start }.to output("Enter '1' for English, entrez 2 pour le français, 输入3作为普通话\n").to_stdout
+      expect{launch_game.start}.to output.to_stdout
     end
   end
   
