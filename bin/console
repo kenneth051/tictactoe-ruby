@@ -4,6 +4,8 @@ require "bundler/setup"
 require "./lib/tictactoe/game"
 require "./lib/tictactoe/validation"
 require "./lib/tictactoe/messages"
+require "./lib/tictactoe/launch_game"
+require 'json'
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
@@ -12,7 +14,10 @@ require "./lib/tictactoe/messages"
 # require "pry"
 # Pry.start
 
-messages=Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,0)
-validate=Tictactoe::Validation.new(messages)
-new_game=Tictactoe::Game.new(validate, messages)
-new_game.play
+# messages=Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,0)
+# validate=Tictactoe::Validation.new(messages)
+# new_game=Tictactoe::Game.new(validate, messages)
+# new_game.play
+json=JSON.parse(File.read("./lib/tictactoe/settings.json"))
+launch_game = Tictactoe::LaunchGame.new(json)
+launch_game.start()
