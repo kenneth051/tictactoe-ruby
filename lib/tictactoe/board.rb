@@ -17,5 +17,9 @@ module Tictactoe
     def is_not_full
       @positions.count("-") > 0
     end
+
+    def clear_board
+      @positions = Array.new(9, "-")
+    end
   end
 end

@@ -5,6 +5,7 @@ require "./lib/tictactoe/game"
 require "./lib/tictactoe/validation"
 require "./lib/tictactoe/messages"
 require "./lib/tictactoe/launch_game"
+require "./lib/tictactoe/output_input"
 require 'json'
 
 # You can add fixtures and/or initialization code here to make experimenting
@@ -14,9 +15,9 @@ require 'json'
 # require "pry"
 # Pry.start
 
-TicTactoe::ALL_MESSAGES
-TicTactoe::Message::ALL_MESSAGES
 
 json = JSON.parse(File.read("./lib/tictactoe/settings.json"))
-launch_game = Tictactoe::LaunchGame.new(json)
+io = Tictactoe::OutputInput.new()
+launch_game = Tictactoe::LaunchGame.new(json,io)
 launch_game.start()
+ 

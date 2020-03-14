@@ -2,19 +2,18 @@ require "./lib/tictactoe/board"
 require "./lib/tictactoe/validation"
 
 module Tictactoe
-  class PositionOutOfRange < StandardError; end
-
   class Game
     attr_reader :board
 
-    def initialize(validation, messages, stdin: $stdin)
+    def initialize(validation, messages, io)
       @validation = validation
       @messages = messages
-      @stdin = stdin
-      puts @messages.get_message("welcome")
-      puts @messages.get_message("symbols")
+      @io = io
+      @io.output(@messages.get_message("welcome"))
+      @io.output(@messages.get_message("symbols"))
       @symbols = []
       @board = Board.new
+      @game = true
     end
 
     def draw
@@ -22,9 +21,9 @@ module Tictactoe
     end
 
     def get_symbol()
-      puts @messages.get_message("enter_symbol")
+      @io.output(@messages.get_message("enter_symbol"))
       while true
-        symbol = @stdin.gets.chomp
+        symbol = @io.input
         if @validation.check_input_symbol(symbol)
           return symbol
         end
@@ -32,9 +31,9 @@ module Tictactoe
     end
 
     def get_position()
-      puts @messages.get_message("enter_position")
+      @io.output(@messages.get_message("enter_position"))
       while true
-        position = @stdin.gets.chomp.to_i
+        position = @io.input.to_i
         if @validation.check_position_range(position) &&
            @validation.check_board_position(position, @board.positions)
           return position
@@ -44,7 +43,7 @@ module Tictactoe
 
     def make_move(move, symbol)
       while @symbols[-1] == symbol
-        puts @messages.get_message("double_play")
+        @io.output(@messages.get_message("double_play"))
         return
       end
       @symbols.push(symbol)
@@ -72,25 +71,49 @@ module Tictactoe
       players = ["o", "x"]
       players.each do |symbol|
         if winning_combinations(symbol)
-          puts @messages.get_message("player_wins") % {:symbol => symbol}
-          return true
+          return true, symbol
         end
+      end
+      return false
+    end
+
+    def output_wining_message(symbol)
+      @io.output(@messages.get_message("player_wins", symbol))
+    end
+
+    def play_again_input
+      @io.output(@messages.get_message("play_again"))
+      input = @io.input
+      if input == "1"
+        @game = true
+      end
+    end
+
+    def play_again()
+      while @game
+        play
       end
     end
 
     def play()
       draw()
-      while @board.is_not_full
-        if check_winner() != true
-          symbol = get_symbol()
-          position = get_position()
-          make_move(position, symbol)
-          draw()
-        else
-          return false
-        end
+      while @board.is_not_full && !check_winner()
+        symbol = get_symbol()
+        position = get_position()
+        make_move(position, symbol)
+        draw()
       end
-      puts @messages.get_message("draw")
+      @game = false
+      symbol = check_winner()
+      if symbol && symbol[0] == true
+        output_wining_message(symbol[1])
+      end
+      if !@board.is_not_full
+        @io.output(@messages.get_message("draw"))
+      end
+      @board.clear_board
+      @symbols = []
+      play_again_input
     end
   end
 end

@@ -12,6 +12,7 @@ module Tictactoe
           "double_play" => "You cannot play consecutively",
           "player_wins" => "Player using '%{symbol}' has won!",
           "draw" => " IT'S A DRAW!",
+          "play_again"=> "Enter '1' to play again or any other key to quit"
         },
         #french
         {
@@ -24,6 +25,7 @@ module Tictactoe
           "enter_position" => "Entrez la position",
           "double_play" => "Vous ne pouvez pas jouer consécutivement",
           "player_wins" => "Le joueur utilisant '%{symbol}' a gagné!",
+          "play_again"=> "Entrez '1' pour jouer à nouveau ou toute autre touche pour quitter",
           "draw" => "C'EST UN DESSIN!",
           },
         #mandarin
@@ -37,6 +39,7 @@ module Tictactoe
           "enter_position" => "输入位置",
           "double_play" => "您不能连续播放",
           "player_wins" => "使用“％{symbol}”的玩家赢了！",
+          "play_again" => "输入 '1' 再次播放或输入其他任意键退出",
           "draw" => " 这是一个平局！",
           },
       ]
@@ -47,8 +50,12 @@ module Tictactoe
       @index = index
     end
 
-    def get_message(key)
-      return @messages[@index][key]
+    def get_message(key,symbol=nil)
+        if symbol
+            return @messages[@index][key] % {:symbol => symbol}
+        end
+        return @messages[@index][key]
+
     end
   end
 end
