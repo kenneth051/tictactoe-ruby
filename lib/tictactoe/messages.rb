@@ -45,9 +45,10 @@ module Tictactoe
       ]
 
   class Messages
-    def initialize(messages, index)
+    def initialize(messages,io, index)
       @messages = messages
       @index = index
+      @io=io
     end
 
     def get_message(key,symbol=nil)
@@ -56,6 +57,39 @@ module Tictactoe
         end
         return @messages[@index][key]
 
+    end
+    def welcome_message
+        @io.output(get_message("welcome"))
+    end
+    def symbols_message
+        @io.output(get_message("symbols"))
+    end
+    def enter_symbol_message
+        @io.output(get_message("enter_symbol"))
+    end
+    def enter_position_message
+        @io.output(get_message("enter_position"))
+    end
+    def double_play_message
+        @io.output(get_message("double_play"))
+    end
+    def winning_message(symbol)
+        @io.output(get_message("player_wins", symbol))
+    end
+    def play_again_message
+        @io.output(get_message("play_again"))
+    end
+    def draw_message
+        @io.output(get_message("draw"))
+    end
+    def invalid_input_message
+        @io.output(get_message("invalid_input"))
+    end
+    def out_of_range_message
+        @io.output(get_message("out_of_range"))
+    end
+    def position_taken_message
+        @io.output(get_message("position_taken"))
     end
   end
 end

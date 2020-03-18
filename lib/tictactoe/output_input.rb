@@ -1,7 +1,8 @@
 module Tictactoe
   class OutputInput
-    def initialize(stdin: $stdin)
+    def initialize(message = nil, stdin: $stdin)
       @stdin = stdin
+      @message = message
     end
 
     def output(message)

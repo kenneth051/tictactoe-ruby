@@ -9,7 +9,7 @@ RSpec.describe Tictactoe::Game, Tictactoe::Board do
     it "should signal a draw when the board is full" do
       input = FakeStringInput.new(["2"])
       io = Tictactoe::OutputInput.new(stdin:input)
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, 0)
+      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,io, 0)
       validate = Tictactoe::Validation.new(messages,io)
       new_game = Tictactoe::Game.new(validate, messages,io)
       new_game.board.positions = ["o", "x", "o", "o", "x", "o", "x", "o", "x","2"]

@@ -14,8 +14,8 @@ module Tictactoe
       puts " #{positions[6]} | #{positions[7]} | #{positions[8]} "
     end
 
-    def is_not_full
-      @positions.count("-") > 0
+    def is_full
+      @positions.count("-") == 0
     end
 
     def clear_board
