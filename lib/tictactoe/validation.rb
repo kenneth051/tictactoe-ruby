@@ -1,24 +1,29 @@
 module Tictactoe
   class Validation
+    def initialize(messages, io)
+      @io = io
+      @messages = messages
+    end
+
     def check_input_symbol(input)
       if ["x", "o"].include? input
         return input
       end
-      puts "invalid input, symbol be either 'x' or 'o' lowercase"
+      @messages.invalid_input_message
     end
 
     def check_position_range(input)
       if input > 0 && input <= 9
         return input
       end
-      puts "position out of range, enter from 1 to 9"
+      @messages.out_of_range_message
     end
 
     def check_board_position(input, board)
       if board[input - 1] == "-"
         return input
       end
-      puts "position has been taken, choose another one"
+      @messages.position_taken_message
     end
   end
 end
