@@ -25,5 +25,6 @@ module Tictactoe
       end
       @messages.position_taken_message
     end
+
   end
 end

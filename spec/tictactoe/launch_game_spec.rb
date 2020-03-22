@@ -1,4 +1,5 @@
 require "./lib/tictactoe/launch_game"
+require "./lib/tictactoe/console_game"
 
 RSpec.describe Tictactoe::LaunchGame do
   context "#choose_language" do
@@ -6,7 +7,7 @@ RSpec.describe Tictactoe::LaunchGame do
       json=JSON.parse(File.read("./lib/tictactoe/settings.json"))
       input = FakeStringInput.new(["1","1"])
       io = Tictactoe::OutputInput.new(stdin:input)
-      launch_game = Tictactoe::LaunchGame.new(json, io)
+      launch_game = Tictactoe::LaunchGame.new(json, io,Tictactoe::ConsoleGame)
       launch_game.choose_language
       expect { launch_game.choose_language }.to output("Enter '1' for English, entrez 2 pour le français, 输入3作为普通话\n").to_stdout
     end
@@ -14,7 +15,7 @@ RSpec.describe Tictactoe::LaunchGame do
         json=JSON.parse(File.read("./lib/tictactoe/settings.json"))
         input = FakeStringInput.new(["1"])
         io = Tictactoe::OutputInput.new(stdin:input)
-        launch_game = Tictactoe::LaunchGame.new(json, io)
+        launch_game = Tictactoe::LaunchGame.new(json, io,Tictactoe::ConsoleGame)
         expect(launch_game.choose_language).to be_kind_of(String) 
       end
   end
@@ -24,7 +25,7 @@ RSpec.describe Tictactoe::LaunchGame do
       inputs=["1","x", "1", "o", "5", "x", "3", "o", "4", "x", "2", "o", "6", "x", "7", "o", "8"]
       input = FakeStringInput.new(inputs)
       io = Tictactoe::OutputInput.new(stdin:input)
-      launch_game = Tictactoe::LaunchGame.new(json, io)
+      launch_game = Tictactoe::LaunchGame.new(json, io,Tictactoe::ConsoleGame)
       expect{launch_game.start}.to output.to_stdout
     end
   end

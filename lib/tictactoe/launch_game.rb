@@ -5,9 +5,10 @@ require "./lib/tictactoe/messages"
 
 module Tictactoe
   class LaunchGame
-    def initialize(json_file,io)
+    def initialize(json_file,io,gameInterface)
       @obj = json_file
       @io=io
+      @gameInterface = gameInterface
     end
 
     def choose_language(key = nil)
@@ -19,13 +20,13 @@ module Tictactoe
     end
 
 
-    def start
-      language_index = choose_language()
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,@io, language_index.to_i)
-      outputinput= Tictactoe::OutputInput.new(messages)
+    def start()
+      @gameInterface.inspect
+      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,@io,choose_language().to_i)
       validate = Tictactoe::Validation.new(messages, @io)
-      new_game = Tictactoe::Game.new(validate, messages, @io)
-      new_game.play_again
+      game = Tictactoe::Game.new(validate, messages, @io)
+      new_game = @gameInterface.new(game, messages, @io)
+      new_game.play()
     end
   end
 end
