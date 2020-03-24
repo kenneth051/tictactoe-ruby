@@ -1,4 +1,4 @@
-require "./lib/tictactoe/output_input"
+require "./lib/output_input"
 require "./spec/tictactoe/fakers"
 
 RSpec.describe Tictactoe::OutputInput do

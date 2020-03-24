@@ -1,7 +1,8 @@
 require "json"
-require "./lib/tictactoe/game"
-require "./lib/tictactoe/validation"
-require "./lib/tictactoe/messages"
+require_relative "./game"
+require_relative "./validation"
+require_relative "./messages"
+require_relative "./console_validation"
 
 module Tictactoe
   class LaunchGame
@@ -23,9 +24,9 @@ module Tictactoe
     def start()
       @gameInterface.inspect
       messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,@io,choose_language().to_i)
-      validate = Tictactoe::Validation.new(messages, @io)
-      game = Tictactoe::Game.new(validate, messages, @io)
-      new_game = @gameInterface.new(game, messages, @io)
+      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+      game = Tictactoe::Game.new(messages, @io)
+      new_game = @gameInterface.new(game, messages, @io,validate)
       new_game.play()
     end
   end

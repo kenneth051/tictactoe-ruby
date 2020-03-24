@@ -1,4 +1,5 @@
-require "./lib/tictactoe/messages"
+require "./lib/messages"
+
 RSpec.describe Tictactoe::Messages do
   context "#get_message" do
     it "should return nil if message key is invalid" do

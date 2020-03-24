@@ -1,12 +1,11 @@
-require "./lib/tictactoe/board"
-require "./lib/tictactoe/validation"
+require_relative "./board"
+require_relative "./validation"
 
 module Tictactoe
   class Game
     attr_accessor :board, :symbols
 
-    def initialize(validation, messages, io, board = Board.new)
-      @validation = validation
+    def initialize(messages, io, board = Board.new)
       @messages = messages
       @io = io
       @symbols = []
@@ -16,21 +15,6 @@ module Tictactoe
 
     def draw
       @board.draw
-    end
-
-    def get_symbol(input)
-      symbol = input
-      if @validation.check_input_symbol(symbol)
-        return symbol
-      end
-    end
-
-    def get_position(input)
-      position = input
-      if @validation.check_position_range(position) &&
-         @validation.check_board_position(position, @board.positions)
-        return position
-      end
     end
 
     def make_move(symbol, move)
