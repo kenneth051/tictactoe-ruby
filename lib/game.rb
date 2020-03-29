@@ -5,7 +5,7 @@ module Tictactoe
   class Game
     attr_accessor :board, :symbols
 
-    def initialize(messages, io, board = Board.new)
+    def initialize(messages, io, board = Board.new(io))
       @messages = messages
       @io = io
       @symbols = []
@@ -53,7 +53,7 @@ module Tictactoe
     end
 
     def end?
-      !@board.is_full && !check_winner()
+      @board.is_full || check_winner()
     end
 
     def draw?
@@ -66,6 +66,10 @@ module Tictactoe
       if symbol = check_winner()
         output_winning_message(symbol[1])
       end
+    end
+
+    def played_positions
+      @board.positions
     end
 
     def prepare_new_game

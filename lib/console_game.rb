@@ -58,7 +58,7 @@ module Tictactoe
 
     def play
       @game.draw()
-      while @game.end?
+      while !@game.end?
         make_move(get_symbol, get_position)
         @game.draw()
       end
