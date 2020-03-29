@@ -5,7 +5,7 @@ require "./lib/messages"
 require "./lib/output_input"
 require "./lib/console_game"
 require "./lib/console_validation"
-
+require "./lib/board"
 
 RSpec.describe Tictactoe::Game do
   context "#draw" do
@@ -16,11 +16,11 @@ RSpec.describe Tictactoe::Game do
       new_game = Tictactoe::Game.new(messages, io)
       new_game.make_move("x", 1)
       expect { new_game.draw }.to output(
-        " x | - | - 
------------
- - | - | - 
------------
- - | - | - 
+        "      x | - | -
+      -----------
+      - | - | -
+      -----------
+      - | - | -
 "
       ).to_stdout
     end
@@ -52,6 +52,16 @@ RSpec.describe Tictactoe::Game do
       }.not_to raise_error
     end
   end
+  context "#played_positions" do
+    it "return played positions" do
+      new_board = FakeBoard.new(true, board = ["x", "o", "x"])
+      validate = FakeValidation.new
+      io = Tictactoe::OutputInput.new()
+      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
+      game = Tictactoe::Game.new(messages, io, board = new_board)
+      expect(game.played_positions).to eq(["x", "o", "x"])
+    end
+  end
 
   context "check_winner" do
     it "should ensure player using 'x' gets to be a winner" do
@@ -59,7 +69,7 @@ RSpec.describe Tictactoe::Game do
       io = Tictactoe::OutputInput.new()
       messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
       game = Tictactoe::Game.new(messages, io)
-      new_game = Tictactoe::ConsoleGame.new(game, messages, io,validate)
+      new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
       moves = [
         ["x", 1],
         ["o", 5],
@@ -79,8 +89,8 @@ RSpec.describe Tictactoe::Game do
       validate = FakeValidation.new
       io = Tictactoe::OutputInput.new()
       messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-      game = Tictactoe::Game.new( messages, io)
-      new_game = Tictactoe::ConsoleGame.new(game, messages, io,validate)
+      game = Tictactoe::Game.new(messages, io)
+      new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
       moves = [
         ["o", 1],
         ["x", 5],
@@ -166,7 +176,7 @@ RSpec.describe Tictactoe::Game do
       board = FakeBoard.new(true)
       io = Tictactoe::OutputInput.new()
       messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-      new_game = Tictactoe::Game.new( messages, io, board)
+      new_game = Tictactoe::Game.new(messages, io, board)
       expect(board).to receive(:clear_board).with(no_args)
       new_game.prepare_new_game
     end
@@ -354,7 +364,7 @@ RSpec.describe Tictactoe::Game do
       input = FakeStringInput.new(["1"])
       io = Tictactoe::OutputInput.new(stdin: input)
       messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
       game = Tictactoe::Game.new(messages, io)
       new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
       expect { new_game.get_position }.to output.to_stdout
@@ -363,7 +373,7 @@ RSpec.describe Tictactoe::Game do
       input = FakeStringInput.new(["4"])
       io = Tictactoe::OutputInput.new(stdin: input)
       messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
       game = Tictactoe::Game.new(messages, io)
       new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
       expect(new_game.get_position).to eq(4)
@@ -372,7 +382,7 @@ RSpec.describe Tictactoe::Game do
       input = FakeStringInput.new(["x", "20", "5"])
       io = Tictactoe::OutputInput.new(stdin: input)
       messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
       game = Tictactoe::Game.new(messages, io)
       new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
       expect {
@@ -395,7 +405,7 @@ RSpec.describe Tictactoe::Game do
       input = FakeStringInput.new(["r", "x"])
       io = Tictactoe::OutputInput.new(stdin: input)
       messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+      validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
       game = Tictactoe::Game.new(messages, io)
       new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
       expect {
@@ -431,7 +441,7 @@ RSpec.describe Tictactoe::Game do
         input = FakeStringInput.new(inputs)
         io = Tictactoe::OutputInput.new(stdin: input)
         messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
         game = Tictactoe::Game.new(messages, io)
         new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
 
@@ -442,7 +452,7 @@ RSpec.describe Tictactoe::Game do
         input = FakeStringInput.new(inputs)
         io = Tictactoe::OutputInput.new(stdin: input)
         messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
         game = Tictactoe::Game.new(messages, io)
         new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
 
@@ -453,7 +463,7 @@ RSpec.describe Tictactoe::Game do
         input = FakeStringInput.new(inputs)
         io = Tictactoe::OutputInput.new(stdin: input)
         messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
         game = Tictactoe::Game.new(messages, io)
         new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
 
@@ -472,7 +482,7 @@ RSpec.describe Tictactoe::Game do
         expect(game).to receive(:win?).with(no_args)
         expect(game).to receive(:draw?).with(no_args)
         expect(game).to receive(:prepare_new_game).with(no_args)
-        expect(game).to receive(:end?).with(no_args)
+        expect(game).to receive(:end?).with(no_args).and_return(true)
         new_game.play
       end
     end
@@ -481,7 +491,7 @@ RSpec.describe Tictactoe::Game do
         input = FakeStringInput.new(["1"])
         io = Tictactoe::OutputInput.new(stdin: input)
         messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
         game = Tictactoe::Game.new(messages, io)
         new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
 
@@ -491,7 +501,7 @@ RSpec.describe Tictactoe::Game do
         input = FakeStringInput.new(["2"])
         io = Tictactoe::OutputInput.new(stdin: input)
         messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
         game = Tictactoe::Game.new(messages, io)
         new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
 
@@ -501,7 +511,7 @@ RSpec.describe Tictactoe::Game do
         input = FakeStringInput.new(["2"])
         io = Tictactoe::OutputInput.new(stdin: input)
         messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES, io, 0)
-        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new,messages)
+        validate = Tictactoe::ConsoleValidation.new(Tictactoe::Validation.new, messages)
         game = Tictactoe::Game.new(messages, io)
         new_game = Tictactoe::ConsoleGame.new(game, messages, io, validate)
 

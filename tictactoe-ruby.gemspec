@@ -11,8 +11,10 @@ Gem::Specification.new do |s|
     "lib/game.rb",
     "lib/settings.json",
     "lib/console_game.rb",
+    "lib/console_validation.rb",
     "lib/messages.rb",
     "lib/launch_game.rb",
+    "lib/kenneth.rb",
     "lib/output_input.rb"]
     s.require_paths = ["lib"]
   s.homepage =

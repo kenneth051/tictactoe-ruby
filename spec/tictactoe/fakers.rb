@@ -23,7 +23,10 @@ class FakeStringInput
 end
 
 class FakeBoard
-  def initialize(bool)
+  attr_accessor :positions
+
+  def initialize(bool, board = nil)
+    @positions = board
     @bool = bool
   end
 
@@ -41,7 +44,6 @@ class FakeBoard
 end
 
 class FakeMessages
-
   def welcome_message
     return true
   end

@@ -2,16 +2,21 @@ module Tictactoe
   class Board
     attr_accessor :positions
 
-    def initialize()
+    def initialize(io)
       @positions = Array.new(9, "-")
+      @io = io
     end
 
     def draw
-      print " #{positions[0]} | #{positions[1]} | #{positions[2]} \n"
-      print "-----------\n"
-      print " #{positions[3]} | #{positions[4]} | #{positions[5]} \n"
-      print "-----------\n"
-      puts " #{positions[6]} | #{positions[7]} | #{positions[8]} "
+      board = <<-HEREDOC
+      #{positions[0]} | #{positions[1]} | #{positions[2]}
+      -----------
+      #{positions[3]} | #{positions[4]} | #{positions[5]}
+      -----------
+      #{positions[6]} | #{positions[7]} | #{positions[8]}
+      HEREDOC
+
+      @io.output(board)
     end
 
     def is_full
