@@ -1,11 +1,8 @@
 #!/usr/bin/env ruby
-
 require "bundler/setup"
-require "./lib/tictactoe/game"
-require "./lib/tictactoe/validation"
-require "./lib/tictactoe/messages"
-require "./lib/tictactoe/launch_game"
-require "./lib/tictactoe/output_input"
+require_relative "../lib/console_game"
+require_relative "../lib/launch_game"
+require_relative "../lib/output_input"
 require 'json'
 
 # You can add fixtures and/or initialization code here to make experimenting
@@ -16,8 +13,8 @@ require 'json'
 # Pry.start
 
 
-json = JSON.parse(File.read("./lib/tictactoe/settings.json"))
+json = JSON.parse(File.read("./lib/settings.json"))
 io = Tictactoe::OutputInput.new()
-launch_game = Tictactoe::LaunchGame.new(json,io)
+launch_game = Tictactoe::LaunchGame.new(json,io ,Tictactoe::ConsoleGame)
 launch_game.start()
  

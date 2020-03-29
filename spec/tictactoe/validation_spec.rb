@@ -1,65 +1,43 @@
-require "./lib/tictactoe/validation"
-require "./lib/tictactoe/messages"
+require "./lib/validation"
 require "./spec/tictactoe/fakers"
-require "./lib/tictactoe/output_input"
 
 RSpec.describe Tictactoe::Validation do
   context "check_position_range" do
     it "should not allow players to play using positions out of range" do
-      io = Tictactoe::OutputInput.new()
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,io, 0)
-      validate = Tictactoe::Validation.new(messages,io)
-      expect {
-        validate.check_position_range(11)
-      }.to output.to_stdout
+      validate = Tictactoe::Validation.new
+      expect(validate.check_position_range(11)).to eq(nil)
     end
     it "should only allow players to play using positions in range" do
-      io = Tictactoe::OutputInput.new()
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,io, 0)
-      validate = Tictactoe::Validation.new(messages,io)
-      expect(validate.check_position_range(2)).to eq(2)
+      validate = Tictactoe::Validation.new
+      expect(validate.check_position_range(2)).to eq(true)
     end
   end
 
   context "check_board_position" do
     it "should not permit players to play using already played positions" do
-      io = Tictactoe::OutputInput.new()
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,io, 0)
-      validate = Tictactoe::Validation.new(messages,io)
+      validate = Tictactoe::Validation.new()
       board = ["x", "o", "x", "o"]
-      expect {
-        validate.check_board_position(2, board)
-      }.to output.to_stdout
+      expect(validate.check_board_position(2, board)).to eq(nil)
     end
     it "should only permit players to play using open positions" do
-      io = Tictactoe::OutputInput.new()
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,io, 0)
-      validate = Tictactoe::Validation.new(messages,io)
+      validate = Tictactoe::Validation.new
       board = ["-", "-", "-", "-"]
-      expect(validate.check_board_position(2, board)).to eq(2)
+      expect(validate.check_board_position(2, board)).to eq(true)
     end
   end
 
   context "check_input_symbol" do
     it "should not permit players to play using unknown symbols" do
-      io = Tictactoe::OutputInput.new()
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,io, 0)
-      validate = Tictactoe::Validation.new(messages,io)
-      expect {
-        validate.check_input_symbol("c")
-      }.to output.to_stdout
+      validate = Tictactoe::Validation.new
+      expect(validate.check_input_symbol("c")).to eq(nil)
     end
     it "should only permit players to play using known symbol 'o'" do
-      io = Tictactoe::OutputInput.new()
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,io, 0)
-      validate = Tictactoe::Validation.new(messages,io)
-      expect(validate.check_input_symbol("o")).to eq("o")
+      validate = Tictactoe::Validation.new
+      expect(validate.check_input_symbol("o")).to eq(true)
     end
     it "should only permit players to play using known symbol 'x'" do
-      io = Tictactoe::OutputInput.new()
-      messages = Tictactoe::Messages.new(Tictactoe::ALL_MESSAGES,io, 0)
-      validate = Tictactoe::Validation.new(messages,io)
-      expect(validate.check_input_symbol("x")).to eq("x")
+      validate = Tictactoe::Validation.new
+      expect(validate.check_input_symbol("x")).to eq(true)
     end
   end
 end

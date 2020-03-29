@@ -1,4 +1,4 @@
-require "./lib/tictactoe/game"
+require "./lib/game"
 RSpec.describe Tictactoe::Board do
   context "board" do
     it "board should have a length of nine" do
